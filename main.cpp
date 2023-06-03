@@ -2,6 +2,7 @@
 #include<string>
 #include<ctime>
 #include<iomanip>
+#include<vector>
 
 using namespace std;
 
@@ -14,9 +15,12 @@ main()
  {
  string command = "";
  string current_task = "";
+ string task = "";
  time_t start = 0;
  time_t end = 0;
  time_t total = 0;
+ vector < pair <string, double> > vec;
+
 
  while(command != "exit")
  {
@@ -26,18 +30,26 @@ main()
    if(command == "begin")
    {
 
-    if(current_task != "")
-     {
+     cout << "введите название задачи:";
+     cin >> task;
+
+     if(current_task == task)
+      {
       end = time(NULL);
       double time_spent = calcTime(start,end);
       total += (time_t)time_spent;
       cout << "задача " << current_task << " завершена за " << time_spent << " часов" << endl;
-     }
+      vec.push_back(make_pair(current_task, time_spent));
+      }
+     
+     else
+      {
+        start = time(NULL);
+        current_task = task;
+        cout << "отслеживание задачи " << current_task << " начато" << endl;
+      }
 
-     cout << "введите название задачи:";
-     cin >> current_task;
-     start = time(NULL);
-     cout << "отслеживание задачи " << current_task << " начато" << endl;
+     
    }
 
      else if(command == "end")
@@ -47,6 +59,7 @@ main()
           end = time(NULL);
           double time_spent = calcTime(start, end);
           total += (time_t)time_spent;
+          vec.push_back(make_pair(current_task, time_spent));
           cout << "задача " << current_task << " завершена за " << time_spent << " часов" << endl;
           current_task = "";
         }
@@ -55,13 +68,10 @@ main()
 
         else if (command == "status")
         {
-          if(current_task != "")
-           {
-             cout << "currently tracking task: " << current_task << endl;
-           }
-
-           cout << "total spent on all tasks: " << total << " second" << endl;
-          
+         for(int i = 0; i < vec.size(); i ++)
+          {
+            cout << vec[i].first << " " << vec[i].second << endl;
+          }
         }
    
  }
