@@ -24,29 +24,39 @@ main()
 
  while(command != "exit")
  {
-   cout << "введите команду:";
+   cout << "enter command:";
    cin >> command;
 
    if(command == "begin")
    {
 
-     cout << "введите название задачи:";
+     cout << "enter name task:";
      cin >> task;
 
+
      if(current_task == task)
+      {
+        cout << "the task is already running" << endl;
+      }
+
+     else if(current_task != task && current_task != "")
       {
       end = time(NULL);
       double time_spent = calcTime(start,end);
       total += (time_t)time_spent;
-      cout << "задача " << current_task << " завершена за " << time_spent << " часов" << endl;
+      cout << "task " << current_task << " finished in " << time_spent << " hours" << endl;
       vec.push_back(make_pair(current_task, time_spent));
+      start = time(NULL);
+      current_task = task;
+      cout << "tracking task " << current_task << " started" << endl;
+      
       }
      
      else
       {
         start = time(NULL);
         current_task = task;
-        cout << "отслеживание задачи " << current_task << " начато" << endl;
+        cout << "tracking task " << current_task << " started" << endl;
       }
 
      
@@ -60,8 +70,9 @@ main()
           double time_spent = calcTime(start, end);
           total += (time_t)time_spent;
           vec.push_back(make_pair(current_task, time_spent));
-          cout << "задача " << current_task << " завершена за " << time_spent << " часов" << endl;
+          cout << "task " << current_task << " finished in " << time_spent << " hours" << endl;
           current_task = "";
+      
         }
 
       }
@@ -72,11 +83,15 @@ main()
           {
             cout << vec[i].first << " " << vec[i].second << endl;
           }
+          if(current_task != "")
+          {
+            cout << "task is running now: " << current_task << endl;
+          }
         }
    
  }
  
-cout << "программа завершена.";
+cout << "program completed.";
 
 return 0;
   
